@@ -13,112 +13,128 @@
 <h2>Código do projeto</h2>
 <pre>
 <code>
+  
+import pandas as pd  # Importa a biblioteca pandas e a apelida de pd
+
 #Função para converter valor em Real para outras moedas
+
 def converter_real():
     try:
-        valor = float(input("Insira aqui o valor desejado: "))  # Solicita e converte o valor inserido pelo usuário em float
+        valor = float(input("Insira aqui o valor desejado: "))  #Solicita e converte o valor inserido pelo usuário em float
+    except ValueError:
+        print("Por favor, insira um valor válido.")  #Captura exceção se o valor não puder ser convertido para float
+        return None, None, None  #Retorna valores nulos se a entrada não for válida
     
-    except ValueError: 
-        print("Por favor, insira um valor válido.")  # Captura exceção se o valor não puder ser convertido para float
-        return None, None, None  # Retorna valores nulos se a entrada não for válida
-    
-    # Realiza as conversões para Dólar americano e Euro
+    #Realiza as conversões para Dólar americano e Euro
     conversao_para_USA = valor / 5.51
     conversao_para_Euro = valor / 5.89
     
     return conversao_para_USA, conversao_para_Euro, valor
 
-
 #Função para converter valor em Dólar para outras moedas
 def converter_dolar():
     try:
-        valor = float(input("Insira aqui o valor desejado: "))  # Solicita e converte o valor inserido pelo usuário em float
-    except ValueError: 
-        print("Por favor, insira um valor válido.")  # Captura exceção se o valor não puder ser convertido para float
-        return None, None, None  # Retorna valores nulos se a entrada não for válida
+        valor = float(input("Insira aqui o valor desejado: "))  #Solicita e converte o valor inserido pelo usuário em float
+    except ValueError:
+        print("Por favor, insira um valor válido.")  #Captura exceção se o valor não puder ser convertido para float
+        return None, None, None  #Retorna valores nulos se a entrada não for válida
     
-    # Realiza as conversões para Real brasileiro e Euro
+    #Realiza as conversões para Real brasileiro e Euro
     conversao_para_Real = valor * 5.51
     conversao_para_Euro = valor / 1.07
     
     return conversao_para_Real, conversao_para_Euro, valor
 
-
 #Função para converter valor em Euro para outras moedas
 def converter_Euro():
     try:
-        valor = float(input("Insira aqui o valor desejado: "))  # Solicita e converte o valor inserido pelo usuário em float
-    except ValueError: 
-        print("Por favor, insira um valor válido.")  # Captura exceção se o valor não puder ser convertido para float
-        return None, None, None  # Retorna valores nulos se a entrada não for válida
+        valor = float(input("Insira aqui o valor desejado: "))  #Solicita e converte o valor inserido pelo usuário em float
+    except ValueError:
+        print("Por favor, insira um valor válido.")  #Captura exceção se o valor não puder ser convertido para float
+        return None, None, None  #Retorna valores nulos se a entrada não for válida
     
-    # Realiza as conversões para Real brasileiro e Dólar americano
+    #Realiza as conversões para Real brasileiro e Dólar americano
     conversao_para_Real = valor * 5.89
     conversao_para_Dolar = valor * 1.07
     
     return conversao_para_Real, conversao_para_Dolar, valor
 
-
 #Função principal para converter moedas
 def conversor_moedas(moeda):
     
     if moeda == "real brasileiro":
-        # Se a moeda escolhida for Real brasileiro, solicita o valor a ser convertido
-        
+        #Se a moeda escolhida for Real brasileiro, solicita o valor a ser convertido
         print("Agora insira o valor a ser convertido.")
         
-        # Chama a função converter_real() para realizar as conversões
-        valor_convertido_para_USA, valor_convertido_para_Euro, mostrar_valor = converter_real()
+        #Chama a função converter_real() para realizar as conversões
+        valor_convertido_para_Dolar, valor_convertido_para_Euro, mostrar_valor = converter_real()
         
-        # Verifica se o valor inserido foi válido
+        #Verifica se o valor inserido foi válido
         if mostrar_valor is not None:
-            
-            # Se válido, exibe o valor inserido e os resultados das conversões para Dólar americano e Euro
+            #Se válido, exibe o valor inserido e os resultados das conversões para Dólar americano e Euro
             print(f"O valor inserido foi: R${mostrar_valor}\n")
-            print(f"De {moeda.capitalize()} para Dólar americano fica em: US${valor_convertido_para_USA:.2f}")
-            print(f"De {moeda.capitalize()} para Euro fica em: €{valor_convertido_para_Euro:.2f}")
             
+            #Cria uma tabela com os dados para o DataFrame
+            data = {
+                "Valor inserido" : [f"{mostrar_valor:.2f}RS$" , f"{mostrar_valor:.2f}RS$"],  #Valores inseridos
+                "Moeda" : ["Dolar" , "Euro"],  #Moedas para exibição
+                "Conversao" : [f"{valor_convertido_para_Dolar:.2f}US$" , f"{valor_convertido_para_Euro:.2f}€"],  #Valores convertidos
+            }
+
+            df = pd.DataFrame(data)  #Cria um DataFrame com os dados
+
+            print(df)  #Exibe o DataFrame
     
     elif moeda == "dolar americano" or moeda == "dólar americano":
-        # Se a moeda escolhida for Dólar americano, solicita o valor a ser convertido
-        
+        #Se a moeda escolhida for Dólar americano, solicita o valor a ser convertido
         print("Agora insira o valor a ser convertido.")
         
-        # Chama a função converter_dolar() para realizar as conversões
+        #Chama a função converter_dolar() para realizar as conversões
         valor_convertido_para_Real, valor_convertido_para_Euro, mostrar_valor = converter_dolar()
         
-        
-        # Verifica se o valor inserido foi válido
+        #Verifica se o valor inserido foi válido
         if mostrar_valor is not None:
-            
-            # Se válido, exibe o valor inserido e os resultados das conversões para Real brasileiro e Euro
+            #Se válido, exibe o valor inserido e os resultados das conversões para Real brasileiro e Euro
             print(f"O valor inserido foi: US${mostrar_valor}\n")
-            print(f"De {moeda.capitalize()} para Real brasileiro fica em: R${valor_convertido_para_Real:.2f}")
-            print(f"De {moeda.capitalize()} para Euro fica em: €{valor_convertido_para_Euro:.2f}")
             
-    
+            #Cria uma tabela com os dados para o DataFrame
+            data = {
+                "Valor inserido" : [f"{mostrar_valor:.2f}US$" , f"{mostrar_valor:.2f}US$"],  #Valores inseridos
+                "Moeda" : ["Real brasileiro" , "Euro"],  #Moedas para exibição
+                "Conversao" : [f"{valor_convertido_para_Real:.2f}RS$" , f"{valor_convertido_para_Euro:.2f}€"],  #Valores convertidos
+            }
+
+            df = pd.DataFrame(data)  #Cria um DataFrame com os dados
+
+            print(df)  #Exibe o DataFrame
+            
     elif moeda == "euro":
-        # Se a moeda escolhida for Euro, solicita o valor a ser convertido
-        
+        #Se a moeda escolhida for Euro, solicita o valor a ser convertido
         print("Agora insira o valor a ser convertido.")
         
-        # Chama a função converter_Euro() para realizar as conversões
+        #Chama a função converter_Euro() para realizar as conversões
         valor_convertido_para_Real, valor_convertido_para_Dolar, mostrar_valor = converter_Euro()
         
-        
-        # Verifica se o valor inserido foi válido
+        #Verifica se o valor inserido foi válido
         if mostrar_valor is not None:
-            
-            # Se válido, exibe o valor inserido e os resultados das conversões para Real brasileiro e Dólar americano
+            #Se válido, exibe o valor inserido e os resultados das conversões para Real brasileiro e Dólar americano
             print(f"O valor inserido foi: €{mostrar_valor}\n")
-            print(f"De {moeda.capitalize()} para Real brasileiro fica em: R${valor_convertido_para_Real:.2f}")
-            print(f"De {moeda.capitalize()} para Dólar americano fica em: US${valor_convertido_para_Dolar:.2f}")
+            
+            #Cria uma tabela com os dados para o DataFrame
+            data = {
+                "Valor inserido" : [f"{mostrar_valor:.2f}€" , f"{mostrar_valor:.2f}€"],  #Valores inseridos
+                "Moeda" : ["Dolar" , "Real brasileiro"],  #Moedas para exibição
+                "Conversao" : [f"{valor_convertido_para_Dolar:.2f}US$" , f"{valor_convertido_para_Real:.2f}RS$"],  #Valores convertidos
+            }
+
+            df = pd.DataFrame(data)  #Cria um DataFrame com os dados
+
+            print(df)  #Exibe o DataFrame
 
     else:
-        # Se a moeda escolhida não for reconhecida, exibe uma mensagem de erro
+        #Se a moeda escolhida não for reconhecida, exibe uma mensagem de erro
         print("Não trabalhamos com essa moeda ainda. Por favor, escolha entre: Real brasileiro, Dólar americano ou Euro")
 
-        
 #Início do programa principal
 print("Bem vindo ao conversor de moedas! \n")
 
@@ -126,7 +142,7 @@ print("Aqui você pode converter três moedas entre si, seriam essas: Real brasi
 
 print("Em seguida, escolha qual a moeda entre as três citadas que deseja converter.")
 
-moeda = str(input("Insira qual será convertida: ")).lower()  # Solicita ao usuário a escolha da moeda e converte para minúsculas
+moeda = str(input("Insira qual será convertida: ")).lower()  #Solicita ao usuário a escolha da moeda e converte para minúsculas
 
 print(f"A moeda selecionada é: {moeda.capitalize()} \n")
 
